@@ -27,14 +27,12 @@ export default function App({ isPreview }: IProps) {
   };
 
   return (
-    <div className="app">
-      <Calendar
-        icons={DEFAULT_ICONS}
-        isPreview={isPreview}
-        todos={todos}
-        schedules={schedules}
-        onChange={handleChange}
-      />
-    </div>
+    <Calendar
+      icons={DEFAULT_ICONS}
+      isPreview={isPreview}
+      todos={todos}
+      schedules={schedules}
+      onChange={handleChange}
+    />
   );
 }
