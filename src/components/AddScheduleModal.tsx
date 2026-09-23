@@ -1,23 +1,28 @@
 import { useEffect } from 'react';
 import { Button, DatePicker, Form, Input, Modal, Space, TimePicker } from 'antd';
-import type { ReactNode } from 'react';
 import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
 import type { DailySchedule } from '../types';
+import type { IconItem } from './Calendar/types';
 import './pickers.less';
 
 interface IconSelectorProps {
-  icons: Record<string, ReactNode>;
+  icons: IconItem[];
   value?: string;
   onChange?: (v: string) => void;
 }
 
-function IconSelector({ icons, onChange }: IconSelectorProps) {
+function IconSelector({ icons, value, onChange }: IconSelectorProps) {
   return (
     <div className="emoji-grid">
-      {Object.entries(icons).map(([key, node]) => (
-        <span key={key} className="emoji-item" onClick={() => onChange?.(key)}>
-          {node}
+      {icons.map(({ key, icon, tip }) => (
+        <span
+          key={key}
+          className={value === key ? 'emoji-item active' : 'emoji-item'}
+          onClick={() => onChange?.(key)}
+          title={tip}
+        >
+          {icon}
         </span>
       ))}
     </div>
@@ -29,8 +34,8 @@ export interface AddScheduleModalProps {
   editing: DailySchedule | null;
   /** 新增时默认日期 */
   initialDate?: string;
-  /** 外部传入的图标映射：key 为图标标识，value 为图片 DOM */
-  icons: Record<string, ReactNode>;
+  /** 外部传入的图标列表 */
+  icons: IconItem[];
   onClose: () => void;
   onSave: (s: DailySchedule) => void;
   onDelete: (id: string) => void;
@@ -47,7 +52,7 @@ export function AddScheduleModal({
 }: AddScheduleModalProps) {
   const [form] = Form.useForm();
   const isEdit = !!editing;
-  const iconKeys = Object.keys(icons);
+  const iconKeys = icons.map((item) => item.key);
 
   useEffect(() => {
     if (!open) return;

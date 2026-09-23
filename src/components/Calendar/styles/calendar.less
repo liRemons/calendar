@@ -1,4 +1,19 @@
 // 日历容器与头部
+.calendar-container {
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+@media screen and (max-width: 500px) {
+  .calendar-container {
+    flex-direction: column;
+  }
+}
+
 .calendar {
   border: 1px solid #f0f0f0;
   overflow: hidden;

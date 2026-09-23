@@ -18,13 +18,14 @@ import { computeVisibilityRange, getVisibleWeeks, layoutTodos } from './layout';
 import type { CalendarProps, ViewMode } from './types';
 import './styles/calendar.less';
 
-export type { CalendarProps, TodoSeg, ViewMode, VisibilityRange } from './types';
+export type { CalendarProps, IconItem, TodoSeg, ViewMode, VisibilityRange } from './types';
 
 const WEEK_HEADERS = ['日', '一', '二', '三', '四', '五', '六'];
 
 export function Calendar({
-  todos,
-  schedules,
+  todos: initialTodos,
+  schedules: initialSchedules,
+  onChange,
   onSaveTodo,
   onDeleteTodo,
   onSaveSchedule,
@@ -38,6 +39,10 @@ export function Calendar({
   const [viewMode, setViewMode] = useLocalStorage<ViewMode>('calendar_view_mode', isPreview ? 'items' : 'all');
   /** 选中日期（YYYY-MM-DD），默认今天；null 表示未选中（不展示详情面板） */
   const [selectedDate, setSelectedDate] = useState<string | null>(fmt(dayjs()));
+
+  /** 内部自维护的待办/日程（外部传入的 todos/schedules 仅作为初始化值） */
+  const [todos, setTodos] = useState<TodoRange[]>(initialTodos ?? []);
+  const [schedules, setSchedules] = useState<DailySchedule[]>(initialSchedules ?? []);
 
   const [todoModal, setTodoModal] = useState<{
     open: boolean;
@@ -62,11 +67,48 @@ export function Calendar({
   };
   const handleAddTodo = (date: string) => {
     if (isPreview) return;
-    setTodoModal({ open: true, editing: null, initialStart: date, initialEnd: date });
+    setTodoModal({ open: true, editing: null, initialStart: date, initialEnd: dayjs(date).add(1, 'day').format('YYYY-MM-DD') });
   };
   const handleAddSchedule = (date: string) => {
     if (isPreview) return;
     setScheduleModal({ open: true, editing: null, initialDate: date });
+  };
+
+  /** 统一的修改提交点：更新内部todos/schedules并通知外部 */
+  const commit = (nextTodos: TodoRange[], nextSchedules: DailySchedule[]) => {
+    setTodos(nextTodos);
+    setSchedules(nextSchedules);
+    onChange?.(nextTodos, nextSchedules);
+  };
+
+  /** 保存（新增或编辑）待办：按 id 是否存在决定 upsert */
+  const commitSaveTodo = (t: TodoRange) => {
+    const next = todos.some((x) => x.id === t.id)
+      ? todos.map((x) => (x.id === t.id ? t : x))
+      : [...todos, t];
+    commit(next, schedules);
+    onSaveTodo?.(t);
+  };
+
+  const commitDeleteTodo = (id: string) => {
+    const next = todos.filter((x) => x.id !== id);
+    commit(next, schedules);
+    onDeleteTodo?.(id);
+  };
+
+  /** 保存（新增或编辑）日程：按 id 是否存在决定 upsert */
+  const commitSaveSchedule = (s: DailySchedule) => {
+    const next = schedules.some((x) => x.id === s.id)
+      ? schedules.map((x) => (x.id === s.id ? s : x))
+      : [...schedules, s];
+    commit(todos, next);
+    onSaveSchedule?.(s);
+  };
+
+  const commitDeleteSchedule = (id: string) => {
+    const next = schedules.filter((x) => x.id !== id);
+    commit(todos, next);
+    onDeleteSchedule?.(id);
   };
 
   const year = cursor.year();
@@ -98,7 +140,7 @@ export function Calendar({
 
   const schedulesByDate = useMemo(() => {
     const map: Record<string, DailySchedule[]> = {};
-    schedules.forEach((s) => {
+    schedules?.forEach((s) => {
       (map[s.date] ??= []).push(s);
     });
     // 同一天内按开始时间升序（缺省时间为 00:00，排在最前）
@@ -154,7 +196,7 @@ export function Calendar({
   );
 
   return (
-    <>
+    <div className="calendar-container">
       <div className="calendar">
         <CalendarHeader
           isPreview={isPreview}
@@ -214,13 +256,14 @@ export function Calendar({
         <DayPanel
           dateStr={selectedDate}
           holiday={holidayDisplay[selectedDate]}
-          todos={todos.filter((t) => t.start <= selectedDate && selectedDate <= t.end)}
+          todos={todos?.filter((t) => t.start <= selectedDate && selectedDate <= t.end)}
           schedules={schedulesByDate[selectedDate] ?? []}
           onEditTodo={handleEditTodo}
           onEditSchedule={(s) => handleEditSchedule(s, selectedDate)}
           onAddTodo={() => handleAddTodo(selectedDate)}
           onAddSchedule={() => handleAddSchedule(selectedDate)}
           isPreview={isPreview}
+          icons={icons}
         />
       )}
       <AddTodoModal
@@ -229,18 +272,18 @@ export function Calendar({
         initialStart={todoModal.initialStart}
         initialEnd={todoModal.initialEnd}
         onClose={() => setTodoModal({ open: false, editing: null })}
-        onSave={(t) => onSaveTodo?.(t)}
-        onDelete={(id) => onDeleteTodo?.(id)}
+        onSave={commitSaveTodo}
+        onDelete={commitDeleteTodo}
       />
       <AddScheduleModal
         open={scheduleModal.open}
         editing={scheduleModal.editing}
         initialDate={scheduleModal.initialDate}
-        icons={icons ?? {}}
+        icons={icons || []}
         onClose={() => setScheduleModal({ open: false, editing: null })}
-        onSave={(s) => onSaveSchedule?.(s)}
-        onDelete={(id) => onDeleteSchedule?.(id)}
+        onSave={commitSaveSchedule}
+        onDelete={commitDeleteSchedule}
       />
-    </>
+    </div>
   );
 }

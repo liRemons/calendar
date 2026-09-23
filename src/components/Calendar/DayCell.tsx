@@ -1,7 +1,7 @@
 import { Tooltip } from 'antd';
 import { Solar } from 'lunar-javascript';
-import type { ReactNode } from 'react';
 import type { DailySchedule } from '../../types';
+import type { IconItem } from './types';
 import type { HolidayDisplay } from '../../utils/holidayDisplay';
 import { formatTimeRange } from '../../utils/date';
 import './styles/day-cell.less';
@@ -21,8 +21,8 @@ export interface DayCellProps {
   selected?: boolean;
   /** 点击选中该日 */
   onSelect?: (dateStr: string) => void;
-  /** 图标映射：key 为图标标识，value 为图片 DOM */
-  icons?: Record<string, ReactNode>;
+  /** 图标列表 */
+  icons?: IconItem[];
 }
 
 const MAX_SCHEDULES = 2;
@@ -89,7 +89,7 @@ export function DayCell(props: DayCellProps) {
                 onEditSchedule(s, dateStr);
               }}
             >
-              <span className="schedule-icon">{icons?.[s.icon]}</span>
+              <span className="schedule-icon">{icons?.find(i => i.key === s.icon)?.icon}</span>
               <span className="schedule-name">{s.name}</span>
             </span>
           </Tooltip>

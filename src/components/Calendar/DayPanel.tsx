@@ -2,6 +2,7 @@ import { Button, Empty } from 'antd';
 import dayjs from 'dayjs';
 import type { DailySchedule, TodoRange } from '../../types';
 import type { HolidayDisplay } from '../../utils/holidayDisplay';
+import type { IconItem } from './types';
 import { getLunarText } from './DayCell';
 import { formatTimeRange } from '../../utils/date';
 import './styles/day-panel.less';
@@ -29,6 +30,7 @@ interface DayPanelProps {
   onAddTodo: () => void;
   onAddSchedule: () => void;
   isPreview?: boolean;
+  icons?: IconItem[];
 }
 
 /** 日历下方的选中日详情面板（完整展示当日待办与日程） */
@@ -42,6 +44,7 @@ export function DayPanel({
   onAddTodo,
   onAddSchedule,
   isPreview,
+  icons,
 }: DayPanelProps) {
   const d = dayjs(dateStr);
   const refYear = d.year();
@@ -73,7 +76,7 @@ export function DayPanel({
       </div>
 
       {
-        !!todos.length && <div className="day-panel-section">
+        !!todos?.length && <div className="day-panel-section">
           <div className="day-panel-subtitle">待办（{todos.length}）</div>
           {(
             todos.map((t) => (
@@ -107,7 +110,7 @@ export function DayPanel({
                 onClick={() => onEditSchedule(s)}
                 title="点击编辑"
               >
-                <span className="day-panel-schedule-icon">{s.icon}</span>
+                <span className="day-panel-schedule-icon">{icons?.find(i => i.key === s.icon)?.icon}</span>
                 <span className="day-panel-schedule-name">{s.name}</span>
                 {formatTimeRange(s) && <span className="day-panel-schedule-time">{formatTimeRange(s)}</span>}
               </div>

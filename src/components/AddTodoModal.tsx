@@ -69,7 +69,7 @@ export function AddTodoModal({ open, editing, initialStart, initialEnd, onClose,
         form.setFieldsValue({
           color: PRESET_COLORS[5],
           start: initialStart ? dayjs(initialStart) : dayjs(),
-          end: initialEnd ? dayjs(initialEnd) : dayjs(),
+          end: initialEnd ? dayjs(initialEnd) : dayjs().add(1, 'day'),
           startTime: null,
           endTime: null,
         });

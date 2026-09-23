@@ -33,7 +33,7 @@ function todoRangeOnDate(t: TodoRange, date: Dayjs): [number, number] {
 
 /** 待办横条布局：按周行分段 + 每周独立分配泳道（感知时间：仅时间区间冲突才视为冲突） */
 export function layoutTodos(
-  todos: TodoRange[],
+  rawTodos: TodoRange[],
   grid: DayItem[],
 ): { todoSegs: TodoSeg[]; todoLanesByDate: Record<string, number> } {
   const dateIdx: Record<string, number> = {};
@@ -43,6 +43,8 @@ export function layoutTodos(
   const visStart = fmt(grid[0].date);
   const visEnd = fmt(grid[grid.length - 1].date);
 
+  // 防御：todos 来自 localStorage，可能为 null/对象等非数组，展开失败会抛 "TypeError: n is not iterable"
+  const todos: TodoRange[] = Array.isArray(rawTodos) ? rawTodos : [];
   // 全局泳道占用（用于撑开 DayCell 高度）
   const globalLanesAt = new Array<number>(grid.length).fill(0);
   const segs: TodoSeg[] = [];
@@ -170,17 +172,21 @@ export function layoutTodos(
 
 /** "仅待办和日程"模式：计算有内容的周行范围（首~尾，中间周照常展示），无内容返回 null */
 export function computeVisibilityRange(
-  todos: TodoRange[],
-  schedules: DailySchedule[],
+  rawTodos: TodoRange[],
+  rawSchedules: DailySchedule[],
   dateIndexOf: Record<string, number>,
   year: number,
   month: number,
 ): VisibilityRange | null {
+  // 防御：todos/schedules 来自 localStorage，可能为 null/对象等非数组，直接 forEach 会报 "read only" / "not iterable"
+  const todos: TodoRange[] = Array.isArray(rawTodos) ? rawTodos : [];
+  const schedules: DailySchedule[] = Array.isArray(rawSchedules) ? rawSchedules : [];
+
   const monthStart = `${year}-${String(month + 1).padStart(2, '0')}-01`;
   const monthEnd = dayjs(new Date(year, month + 1, 0));
   const monthEndStr = `${monthEnd.year()}-${String(monthEnd.month() + 1).padStart(2, '0')}-${String(monthEnd.date()).padStart(2, '0')}`;
   const rows = new Set<number>();
-  todos.forEach((t) => {
+  todos?.forEach((t) => {
     const lo = t.start < monthStart ? monthStart : t.start;
     const hi = t.end > monthEndStr ? monthEndStr : t.end;
     if (hi < lo) return;

@@ -4,4 +4,4 @@
  * 消费方需同时引入样式：import 'remons-calendar/style.css';
  */
 export { Calendar } from './components/Calendar';
-export type { CalendarProps } from './components/Calendar';
+export type { CalendarProps, IconItem } from './components/Calendar';
