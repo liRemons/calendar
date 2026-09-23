@@ -1,27 +1,23 @@
 import { useEffect } from 'react';
 import { Button, DatePicker, Form, Input, Modal, Space, TimePicker } from 'antd';
+import type { ReactNode } from 'react';
 import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
 import type { DailySchedule } from '../types';
 import './pickers.less';
 
-const EMOJIS = ['📌', '📅', '💼', '📚', '🏃', '🍽️', '💊', '🎂', '☕', '⭐', '✅', '🎯'];
-
-interface EmojiSelectorProps {
+interface IconSelectorProps {
+  icons: Record<string, ReactNode>;
   value?: string;
   onChange?: (v: string) => void;
 }
 
-function EmojiSelector({ value = EMOJIS[0], onChange }: EmojiSelectorProps) {
+function IconSelector({ icons, onChange }: IconSelectorProps) {
   return (
     <div className="emoji-grid">
-      {EMOJIS.map((e) => (
-        <span
-          key={e}
-          className={`emoji-item ${value === e ? 'active' : ''}`}
-          onClick={() => onChange?.(e)}
-        >
-          {e}
+      {Object.entries(icons).map(([key, node]) => (
+        <span key={key} className="emoji-item" onClick={() => onChange?.(key)}>
+          {node}
         </span>
       ))}
     </div>
@@ -33,14 +29,25 @@ export interface AddScheduleModalProps {
   editing: DailySchedule | null;
   /** 新增时默认日期 */
   initialDate?: string;
+  /** 外部传入的图标映射：key 为图标标识，value 为图片 DOM */
+  icons: Record<string, ReactNode>;
   onClose: () => void;
   onSave: (s: DailySchedule) => void;
   onDelete: (id: string) => void;
 }
 
-export function AddScheduleModal({ open, editing, initialDate, onClose, onSave, onDelete }: AddScheduleModalProps) {
+export function AddScheduleModal({
+  open,
+  editing,
+  initialDate,
+  icons,
+  onClose,
+  onSave,
+  onDelete,
+}: AddScheduleModalProps) {
   const [form] = Form.useForm();
   const isEdit = !!editing;
+  const iconKeys = Object.keys(icons);
 
   useEffect(() => {
     if (!open) return;
@@ -57,14 +64,14 @@ export function AddScheduleModal({ open, editing, initialDate, onClose, onSave, 
         });
       } else {
         form.setFieldsValue({
-          icon: EMOJIS[0],
+          icon: iconKeys[0],
           date: initialDate ? dayjs(initialDate) : dayjs(),
           timeRange: null,
         });
         form.resetFields(['name']);
       }
     }, 100)
-  }, [open, editing, initialDate, form]);
+  }, [open, editing, initialDate, form, icons]);
 
   const handleOk = async () => {
     const values = await form.validateFields();
@@ -109,8 +116,8 @@ export function AddScheduleModal({ open, editing, initialDate, onClose, onSave, 
       }
     >
       <Form form={form} layout="vertical" preserve={false}>
-        <Form.Item label="图标" name="icon" initialValue={EMOJIS[0]} rules={[{ required: true }]}>
-          <EmojiSelector />
+        <Form.Item label="图标" name="icon" initialValue={iconKeys[0]} rules={[{ required: true }]}>
+          <IconSelector icons={icons} />
         </Form.Item>
         <Form.Item label="日期" name="date" rules={[{ required: true, message: '请选择日期' }]}>
           <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" />

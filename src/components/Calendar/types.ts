@@ -1,16 +1,23 @@
+import type { ReactNode } from 'react';
 import type { DailySchedule, TodoRange } from '../../types';
 
 export interface CalendarProps {
+  /** 受控的待办列表数据源 */
   todos: TodoRange[];
+  /** 受控的日程列表数据源 */
   schedules: DailySchedule[];
-  onEditTodo: (t: TodoRange) => void;
-  onEditSchedule: (s: DailySchedule, date: string) => void;
-  /** 从选中详情面板发起新增待办（默认范围为选中日） */
-  onAddTodo: (date: string) => void;
-  /** 从选中详情面板发起新增日程（默认为选中日） */
-  onAddSchedule: (date: string) => void;
-  /** 是否预览模式 */
+  /** 保存（新增或编辑）待办 */
+  onSaveTodo?: (t: TodoRange) => void;
+  /** 删除待办 */
+  onDeleteTodo?: (id: string) => void;
+  /** 保存（新增或编辑）日程 */
+  onSaveSchedule?: (s: DailySchedule) => void;
+  /** 删除日程 */
+  onDeleteSchedule?: (id: string) => void;
+  /** 是否预览模式（禁用新增/编辑操作） */
   isPreview?: boolean;
+  /** 日程可用图标映射：key 为图标标识，value 为图片 DOM */
+  icons?: Record<string, ReactNode>;
 }
 
 /** 待办横条段（按周行分段渲染） */

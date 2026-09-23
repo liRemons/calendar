@@ -33,19 +33,23 @@ npm install remons-calendar antd dayjs
 ```tsx
 import { ConfigProvider, App as AntApp } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
-import {
-  Calendar,
-  AddTodoModal,
-  AddScheduleModal,
-} from 'remons-calendar';
+import { Calendar } from 'remons-calendar';
 import type { TodoRange, DailySchedule } from 'remons-calendar';
 import 'remons-calendar/style.css';
 
-// 用 State 或 useLocalStorage 管理 todos / schedules，
-// 通过 onEditTodo / onAddTodo 等回调打开 AddTodoModal / AddScheduleModal（参考 src/App.tsx）
+// 受控数据模式：useState / useLocalStorage 管理 todos / schedules，
+// 保存/删除通过 onSaveTodo / onDeleteTodo / onSaveSchedule / onDeleteSchedule 回调。
+// 弹窗等交互逻辑已内聚到 Calendar 内部，消费方无需感知。
 <ConfigProvider locale={zhCN}>
   <AntApp>
-    <Calendar todos={todos} schedules={schedules} onEditTodo={...} onEditSchedule={...} onAddTodo={...} onAddSchedule={...} />
+    <Calendar
+      todos={todos}
+      schedules={schedules}
+      onSaveTodo={saveTodo}
+      onDeleteTodo={deleteTodo}
+      onSaveSchedule={saveSchedule}
+      onDeleteSchedule={deleteSchedule}
+    />
   </AntApp>
 </ConfigProvider>
 ```

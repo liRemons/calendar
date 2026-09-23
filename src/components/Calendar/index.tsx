@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Empty } from 'antd';
+import type { ReactNode } from 'react';
 import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
-import type { DailySchedule, HolidayInfo } from '../../types';
+import type { DailySchedule, HolidayInfo, TodoRange } from '../../types';
 import { getHolidays } from '../../services/holiday';
 import { fmt, getMonthGrid, startTimeOf } from '../../utils/date';
 import { getHolidayDisplay } from '../../utils/holidayDisplay';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { AddTodoModal } from '../AddTodoModal';
+import { AddScheduleModal } from '../AddScheduleModal';
 import { DayCell } from './DayCell';
 import { CalendarHeader } from './CalendarHeader';
 import { TodoLanes } from './TodoLanes';
@@ -22,11 +25,12 @@ const WEEK_HEADERS = ['日', '一', '二', '三', '四', '五', '六'];
 export function Calendar({
   todos,
   schedules,
-  onEditTodo,
-  onEditSchedule,
-  onAddTodo,
-  onAddSchedule,
+  onSaveTodo,
+  onDeleteTodo,
+  onSaveSchedule,
+  onDeleteSchedule,
   isPreview,
+  icons,
 }: CalendarProps) {
   const [cursor, setCursor] = useState<Dayjs>(dayjs());
   const [holidays, setHolidays] = useState<Record<string, HolidayInfo>>({});
@@ -34,6 +38,36 @@ export function Calendar({
   const [viewMode, setViewMode] = useLocalStorage<ViewMode>('calendar_view_mode', isPreview ? 'items' : 'all');
   /** 选中日期（YYYY-MM-DD），默认今天；null 表示未选中（不展示详情面板） */
   const [selectedDate, setSelectedDate] = useState<string | null>(fmt(dayjs()));
+
+  const [todoModal, setTodoModal] = useState<{
+    open: boolean;
+    editing: TodoRange | null;
+    initialStart?: string;
+    initialEnd?: string;
+  }>({ open: false, editing: null });
+  const [scheduleModal, setScheduleModal] = useState<{
+    open: boolean;
+    editing: DailySchedule | null;
+    initialDate?: string;
+  }>({ open: false, editing: null });
+
+  // 事件处理器：包裹 isPreview 拦截 + 打开内部 Modal
+  const handleEditTodo = (t: TodoRange) => {
+    if (isPreview) return;
+    setTodoModal({ open: true, editing: t });
+  };
+  const handleEditSchedule = (s: DailySchedule, _date: string) => {
+    if (isPreview) return;
+    setScheduleModal({ open: true, editing: s });
+  };
+  const handleAddTodo = (date: string) => {
+    if (isPreview) return;
+    setTodoModal({ open: true, editing: null, initialStart: date, initialEnd: date });
+  };
+  const handleAddSchedule = (date: string) => {
+    if (isPreview) return;
+    setScheduleModal({ open: true, editing: null, initialDate: date });
+  };
 
   const year = cursor.year();
   const month = cursor.month();
@@ -163,13 +197,14 @@ export function Calendar({
                       holiday={holidayDisplay[dateStr]}
                       todoLanes={todoLanesByDate[dateStr] ?? 0}
                       schedules={schedulesByDate[dateStr] ?? []}
-                      onEditSchedule={onEditSchedule}
+                      onEditSchedule={handleEditSchedule}
+                      icons={icons}
                       selected={selectedDate === dateStr}
                       onSelect={toggleSelect}
                     />
                   );
                 })}
-                <TodoLanes segs={todoSegs.filter((s) => s.weekRow === weekRow)} onEditTodo={onEditTodo} />
+                <TodoLanes segs={todoSegs.filter((s) => s.weekRow === weekRow)} onEditTodo={handleEditTodo} />
               </div>
             ))
           )}
@@ -181,13 +216,31 @@ export function Calendar({
           holiday={holidayDisplay[selectedDate]}
           todos={todos.filter((t) => t.start <= selectedDate && selectedDate <= t.end)}
           schedules={schedulesByDate[selectedDate] ?? []}
-          onEditTodo={onEditTodo}
-          onEditSchedule={(s) => onEditSchedule(s, selectedDate)}
-          onAddTodo={() => onAddTodo(selectedDate)}
-          onAddSchedule={() => onAddSchedule(selectedDate)}
+          onEditTodo={handleEditTodo}
+          onEditSchedule={(s) => handleEditSchedule(s, selectedDate)}
+          onAddTodo={() => handleAddTodo(selectedDate)}
+          onAddSchedule={() => handleAddSchedule(selectedDate)}
           isPreview={isPreview}
         />
       )}
+      <AddTodoModal
+        open={todoModal.open}
+        editing={todoModal.editing}
+        initialStart={todoModal.initialStart}
+        initialEnd={todoModal.initialEnd}
+        onClose={() => setTodoModal({ open: false, editing: null })}
+        onSave={(t) => onSaveTodo?.(t)}
+        onDelete={(id) => onDeleteTodo?.(id)}
+      />
+      <AddScheduleModal
+        open={scheduleModal.open}
+        editing={scheduleModal.editing}
+        initialDate={scheduleModal.initialDate}
+        icons={icons ?? {}}
+        onClose={() => setScheduleModal({ open: false, editing: null })}
+        onSave={(s) => onSaveSchedule?.(s)}
+        onDelete={(id) => onDeleteSchedule?.(id)}
+      />
     </>
   );
 }
