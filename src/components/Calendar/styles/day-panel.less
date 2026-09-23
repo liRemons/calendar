@@ -1,0 +1,157 @@
+// 日历下方的选中日详情面板
+.day-panel {
+  border-top: 1px solid #f0f0f0;
+  padding: 10px 12px 12px;
+  flex: 1;
+}
+
+.day-panel-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+
+  .day-panel-title {
+    display: flex;
+
+    .day-panel-actions {
+      margin-left: 4px;
+      display: flex;
+      gap: 8px;
+    }
+  }
+}
+
+.day-panel-sub {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #888;
+}
+
+.day-panel-holiday {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 500;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &.off {
+    background: #52c41a;
+  }
+
+  &.work {
+    background: #f5222d;
+  }
+}
+
+.day-panel-section {
+  margin-bottom: 8px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.day-panel-subtitle {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.day-panel-todo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 4px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    border-color: #1677ff;
+  }
+}
+
+.day-panel-todo-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.day-panel-todo-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.day-panel-todo-range {
+  flex: none;
+  font-size: 11px;
+  color: #999;
+  white-space: nowrap;
+}
+
+.day-panel-schedule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 4px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    border-color: #1677ff;
+  }
+
+  &:hover .day-panel-schedule-name {
+    color: #1677ff;
+  }
+}
+
+.day-panel-schedule-icon {
+  flex: none;
+}
+
+.day-panel-schedule-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.day-panel-schedule-time {
+  flex: none;
+  font-size: 11px;
+  color: #999;
+  white-space: nowrap;
+}

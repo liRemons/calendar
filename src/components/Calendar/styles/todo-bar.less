@@ -1,0 +1,48 @@
+// 待办横条覆盖层
+.todo-lanes {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.todo-bar {
+  position: absolute;
+  height: 20px;
+  // 极短时间段（如存量单日待办）比例宽度下的最小可点宽度
+  min-width: 12px;
+  opacity: 0.85;
+
+  display: flex;
+  align-items: center;
+  border-radius: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+
+  &.round-left {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+
+  &.round-right {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+}
+
+.todo-bar-label {
+  max-width: 100%;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

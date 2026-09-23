@@ -1,0 +1,150 @@
+// 日期格及其内部元素
+.day-cell {
+  padding: 6px 8px;
+  border-radius: 4px;
+  /* border-right: 1px solid #d7d7d7;
+  border-bottom: 1px solid #d7d7d7; */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+
+  &:nth-child(7n) {
+    border-right: none;
+  }
+
+  &.out .day-num,
+  &.out .day-lunar {
+    color: #bbb;
+  }
+
+  &.today {
+    background: #f0f7ff;
+  }
+
+  &.selected {
+    background: #e6f4ff;
+    outline: 1px solid #1677ff;
+    outline-offset: -1px;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &.today {
+      background: #e6f4ff;
+    }
+  }
+
+  &.weekend {
+    color: #1677ff;
+  }
+
+  &.holiday-work {
+    color: inherit;
+  }
+
+  &.holiday-off {
+    color: #1677ff;
+  }
+
+}
+
+.day-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.day-num {
+  font-size: 22px;
+  font-weight: 650;
+  min-width: 22px;
+  padding: 2px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.day-lunar {
+  font-size: 12px;
+  color: #999;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.day-holiday {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.off {
+    background: #52c41a;
+    color: #fff;
+  }
+
+  &.work {
+    background: #f5222d;
+    color: #fff;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .day-holiday {
+    top: 0;
+    right: 0;
+  }
+}
+
+.todo-spacer {
+  flex: none;
+}
+
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.schedule-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover .schedule-name {
+    color: #1677ff;
+  }
+}
+
+.schedule-icon {
+  flex: none;
+}
+
+.schedule-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.schedule-more {
+  font-size: 11px;
+  color: #999;
+}

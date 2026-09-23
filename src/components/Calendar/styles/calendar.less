@@ -1,0 +1,66 @@
+// 日历容器与头部
+.calendar {
+  border: 1px solid #f0f0f0;
+  overflow: hidden;
+  padding: 0 4px;
+  width: 600px;
+  flex-shink: 0;
+}
+
+@media screen and (max-width: 600px) {
+  .calendar {
+    width: auto;
+  }
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 10px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.calendar-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.calendar-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.week-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.week-cell {
+  text-align: center;
+  padding: 8px 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.day-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-empty {
+  padding: 32px 0 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.day-week {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
