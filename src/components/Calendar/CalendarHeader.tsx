@@ -11,6 +11,7 @@ interface CalendarHeaderProps {
   onToday: () => void;
   onPrevMonth: () => void;
   onNextMonth: () => void;
+  isPreview?: boolean; // 是否是预览模式
 }
 
 /** 日历头部：月份标题、视图模式切换、今日/翻月按钮 */
@@ -23,6 +24,7 @@ export function CalendarHeader({
   onToday,
   onPrevMonth,
   onNextMonth,
+  isPreview,
 }: CalendarHeaderProps) {
   return (
     <div className="calendar-header">
@@ -40,18 +42,20 @@ export function CalendarHeader({
           onChange={(v) => onViewModeChange(v as ViewMode)}
         />
       </div>
-      <Space>
-        <Button shape="circle" size="small" onClick={onToday}>
-          今
-        </Button>
-        <Button shape="circle" size="small" onClick={onPrevMonth}>
-          <LeftOutlined />
-        </Button>
-        <Button shape="circle" size="small" onClick={onNextMonth}>
-          <RightOutlined />
-        </Button>
-        {loading && <Spin size="small" />}
-      </Space>
+      {
+        !isPreview && <Space>
+          <Button shape="circle" size="small" onClick={onToday}>
+            今
+          </Button>
+          <Button shape="circle" size="small" onClick={onPrevMonth}>
+            <LeftOutlined />
+          </Button>
+          <Button shape="circle" size="small" onClick={onNextMonth}>
+            <RightOutlined />
+          </Button>
+          {loading && <Spin size="small" />}
+        </Space>
+      }
     </div>
   );
 }

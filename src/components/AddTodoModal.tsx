@@ -37,7 +37,7 @@ function ColorSwatchSelector({ value = PRESET_COLORS[5], onChange }: ColorSwatch
   );
 }
 
-interface Props {
+export interface AddTodoModalProps {
   open: boolean;
   editing: TodoRange | null;
   /** 新增时默认开始日期 */
@@ -49,7 +49,7 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
-export function AddTodoModal({ open, editing, initialStart, initialEnd, onClose, onSave, onDelete }: Props) {
+export function AddTodoModal({ open, editing, initialStart, initialEnd, onClose, onSave, onDelete }: AddTodoModalProps) {
   const [form] = Form.useForm();
   const isEdit = !!editing;
 

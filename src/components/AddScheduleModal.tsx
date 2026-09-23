@@ -28,7 +28,7 @@ function EmojiSelector({ value = EMOJIS[0], onChange }: EmojiSelectorProps) {
   );
 }
 
-interface Props {
+export interface AddScheduleModalProps {
   open: boolean;
   editing: DailySchedule | null;
   /** 新增时默认日期 */
@@ -38,7 +38,7 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
-export function AddScheduleModal({ open, editing, initialDate, onClose, onSave, onDelete }: Props) {
+export function AddScheduleModal({ open, editing, initialDate, onClose, onSave, onDelete }: AddScheduleModalProps) {
   const [form] = Form.useForm();
   const isEdit = !!editing;
 

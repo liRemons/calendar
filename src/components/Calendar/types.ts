@@ -9,6 +9,8 @@ export interface CalendarProps {
   onAddTodo: (date: string) => void;
   /** 从选中详情面板发起新增日程（默认为选中日） */
   onAddSchedule: (date: string) => void;
+  /** 是否预览模式 */
+  isPreview?: boolean;
 }
 
 /** 待办横条段（按周行分段渲染） */

@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import { Button, Space } from 'antd';
 import { Calendar } from './components/Calendar';
 import { AddTodoModal } from './components/AddTodoModal';
 import { AddScheduleModal } from './components/AddScheduleModal';
 import type { DailySchedule, TodoRange } from './types';
 import { useLocalStorage } from './hooks/useLocalStorage';
 
-export default function App() {
+interface IProps {
+  isPreview?: boolean; // 预览模式下不支持编辑日程
+}
+
+export default function App({ isPreview }: IProps) {
   const [todos, setTodos] = useLocalStorage<TodoRange[]>('calendar_todos', []);
   const [schedules, setSchedules] = useLocalStorage<DailySchedule[]>('calendar_schedules', []);
 
@@ -47,27 +50,22 @@ export default function App() {
 
   return (
     <div className="app">
-      {/* <div className="toolbar">
-        <Space>
-          <Button type="primary" size="small" onClick={() => setTodoModal({ open: true, editing: null })}>
-            添加待办
-          </Button>
-          <Button size="small" onClick={() => setScheduleModal({ open: true, editing: null })}>
-            添加日程
-          </Button>
-          <Button danger size="small" onClick={() => setTodos([])}>
-            清空待办
-          </Button>
-          <Button danger size="small" onClick={() => setSchedules([])}>
-            清空日程
-          </Button>
-        </Space>
-      </div> */}
       <Calendar
+        isPreview={isPreview}
         todos={todos}
         schedules={schedules}
-        onEditTodo={(t) => setTodoModal({ open: true, editing: t })}
-        onEditSchedule={(s) => setScheduleModal({ open: true, editing: s })}
+        onEditTodo={(t) => {
+          if (isPreview) {
+            return; // 预览模式下不支持编辑日程
+          }
+          setTodoModal({ open: true, editing: t })
+        }}
+        onEditSchedule={(s) => {
+          if (isPreview) {
+            return; // 预览模式下不支持编辑日程
+          }
+          setScheduleModal({ open: true, editing: s })
+        }}
         onAddTodo={(date) =>
           setTodoModal({ open: true, editing: null, initialStart: date, initialEnd: date })
         }

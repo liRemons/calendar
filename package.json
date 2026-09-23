@@ -1,20 +1,49 @@
 {
-  "name": "calendar-app",
-  "private": true,
-  "version": "0.0.1",
+  "name": "remons-calendar",
+  "version": "1.0.0-beta.1",
+  "description": "React 日历组件：农历/节日展示、节假日与补班、待办范围（line 形式）、单日日程",
   "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "readme.md"
+  ],
+  "sideEffects": [
+    "*.less",
+    "*.css"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "build:lib": "vite build -c vite.lib.config.ts && tsc -p tsconfig.build.json",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build:lib",
+    "publish:dry": "npm run build:lib && npm publish --dry-run"
   },
   "dependencies": {
     "@ant-design/icons": "^5.6.1",
-    "antd": "^5.21.6",
-    "dayjs": "^1.11.13",
-    "lunar-javascript": "^1.6.14",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "lunar-javascript": "^1.6.14"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "peerDependencies": {
+    "antd": ">=5.21.6",
+    "dayjs": ">=1.11.13",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",

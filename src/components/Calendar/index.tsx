@@ -26,11 +26,12 @@ export function Calendar({
   onEditSchedule,
   onAddTodo,
   onAddSchedule,
+  isPreview,
 }: CalendarProps) {
   const [cursor, setCursor] = useState<Dayjs>(dayjs());
   const [holidays, setHolidays] = useState<Record<string, HolidayInfo>>({});
   const [loading, setLoading] = useState(false);
-  const [viewMode, setViewMode] = useLocalStorage<ViewMode>('calendar_view_mode', 'items');
+  const [viewMode, setViewMode] = useLocalStorage<ViewMode>('calendar_view_mode', isPreview ? 'items' : 'all');
   /** 选中日期（YYYY-MM-DD），默认今天；null 表示未选中（不展示详情面板） */
   const [selectedDate, setSelectedDate] = useState<string | null>(fmt(dayjs()));
 
@@ -118,12 +119,11 @@ export function Calendar({
     [weeks, viewMode, visibilityRange],
   );
 
-  console.log(todos, 'todoLanesByDate', todoLanesByDate); // 用于调试
-
   return (
     <>
       <div className="calendar">
         <CalendarHeader
+          isPreview={isPreview}
           year={year}
           month={month}
           viewMode={viewMode}
@@ -185,6 +185,7 @@ export function Calendar({
           onEditSchedule={(s) => onEditSchedule(s, selectedDate)}
           onAddTodo={() => onAddTodo(selectedDate)}
           onAddSchedule={() => onAddSchedule(selectedDate)}
+          isPreview={isPreview}
         />
       )}
     </>

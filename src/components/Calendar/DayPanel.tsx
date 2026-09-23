@@ -28,6 +28,7 @@ interface DayPanelProps {
   onEditSchedule: (s: DailySchedule) => void;
   onAddTodo: () => void;
   onAddSchedule: () => void;
+  isPreview?: boolean;
 }
 
 /** 日历下方的选中日详情面板（完整展示当日待办与日程） */
@@ -40,6 +41,7 @@ export function DayPanel({
   onEditSchedule,
   onAddTodo,
   onAddSchedule,
+  isPreview,
 }: DayPanelProps) {
   const d = dayjs(dateStr);
   const refYear = d.year();
@@ -49,14 +51,16 @@ export function DayPanel({
       <div className="day-panel-header">
         <div className="day-panel-title">
           {d.year()}年{d.month() + 1}月{d.date()}日 {WEEKDAYS[d.day()]}
-          <div className="day-panel-actions">
-            <Button size="small" onClick={onAddTodo}>
-              添加待办
-            </Button>
-            <Button size="small" onClick={onAddSchedule}>
-              添加日程
-            </Button>
-          </div>
+          {
+            !isPreview && <div className="day-panel-actions">
+              <Button size="small" onClick={onAddTodo}>
+                添加待办
+              </Button>
+              <Button size="small" onClick={onAddSchedule}>
+                添加日程
+              </Button>
+            </div>
+          }
         </div>
 
         <span className="day-panel-sub">
