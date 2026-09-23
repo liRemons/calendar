@@ -28,20 +28,18 @@ export function CalendarHeader({
 }: CalendarHeaderProps) {
   return (
     <div className="calendar-header">
-      <div className="calendar-header-left">
-        <span className="calendar-title">
-          {year}年{month + 1}月
-        </span>
-        <Segmented
-          size="small"
-          options={[
-            { label: '日历', value: 'all' },
-            { label: '事项', value: 'items' },
-          ]}
-          value={viewMode}
-          onChange={(v) => onViewModeChange(v as ViewMode)}
-        />
-      </div>
+      <span className="calendar-title">
+        {year}年{month + 1}月
+      </span>
+      <Segmented
+        size="small"
+        options={[
+          { label: '日历', value: 'all' },
+          { label: '事项', value: 'items' },
+        ]}
+        value={viewMode}
+        onChange={(v) => onViewModeChange(v as ViewMode)}
+      />
       {
         !isPreview && <Space>
           <Button shape="circle" size="small" onClick={onToday}>

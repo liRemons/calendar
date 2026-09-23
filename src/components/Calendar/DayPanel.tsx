@@ -69,11 +69,6 @@ export function DayPanel({
           ) : (
             (getLunarText(dateStr) || '\u00A0')
           )}
-          {holiday && (
-            <span className={`day-panel-holiday ${holiday.off ? 'off' : 'work'}`}>
-              {holiday.off ? '休' : '班'}
-            </span>
-          )}
         </span>
       </div>
 
