@@ -185,8 +185,8 @@ export function Calendar({
 
   // "仅待办和日程"模式：计算有内容的周行范围（首~尾，中间周照常展示）
   const visibilityRange = useMemo(
-    () => computeVisibilityRange(todos, schedules, dateIndexOf, year, month),
-    [todos, schedules, year, month, dateIndexOf],
+    () => computeVisibilityRange(todos, schedules, dateIndexOf),
+    [todos, schedules, dateIndexOf],
   );
 
   // "仅待办和日程"模式下实际渲染的周行（保留全量网格中的原始行号，用于待办横条定位）

@@ -95,7 +95,6 @@ export function DayPanel({
           )}
         </div>
       }
-
       {
         !!schedules.length && <div className="day-panel-section">
           <div className="day-panel-subtitle">日程（{schedules.length}）</div>
@@ -108,7 +107,7 @@ export function DayPanel({
                 title="点击编辑"
               >
                 <span className="day-panel-schedule-icon">{icons?.find(i => i.key === s.icon)?.icon}</span>
-                <span className="day-panel-schedule-name">{s.name}</span>
+                <span className="day-panel-schedule-name">{icons?.find(i => i.key === s.icon)?.tip}: {s.name}</span>
                 {formatTimeRange(s) && <span className="day-panel-schedule-time">{formatTimeRange(s)}</span>}
               </div>
             ))

@@ -23,7 +23,6 @@ export function TodoLanes({ segs, onEditTodo }: TodoLanesProps) {
         <Tooltip
           key={`${t.id}-${i}`}
           title={`${t.name}（${rangeTip}）`}
-          overlayInnerStyle={{ maxWidth: 320, wordBreak: 'break-word' }}
         >
           <span
             className={`todo-bar${s.roundLeft ? ' round-left' : ''}${s.roundRight ? ' round-right' : ''}`}

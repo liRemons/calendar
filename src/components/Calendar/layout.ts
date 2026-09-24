@@ -170,25 +170,25 @@ export function layoutTodos(
   return { todoSegs: segs, todoLanesByDate: lanesByDate };
 }
 
-/** "仅待办和日程"模式：计算有内容的周行范围（首~尾，中间周照常展示），无内容返回 null */
+/** "仅待办和日程"模式：计算月网格（含上月/下月临近日期）范围内有内容的周行范围（首~尾，中间周照常展示），无内容返回 null */
 export function computeVisibilityRange(
   rawTodos: TodoRange[],
   rawSchedules: DailySchedule[],
   dateIndexOf: Record<string, number>,
-  year: number,
-  month: number,
 ): VisibilityRange | null {
   // 防御：todos/schedules 来自 localStorage，可能为 null/对象等非数组，直接 forEach 会报 "read only" / "not iterable"
   const todos: TodoRange[] = Array.isArray(rawTodos) ? rawTodos : [];
   const schedules: DailySchedule[] = Array.isArray(rawSchedules) ? rawSchedules : [];
 
-  const monthStart = `${year}-${String(month + 1).padStart(2, '0')}-01`;
-  const monthEnd = dayjs(new Date(year, month + 1, 0));
-  const monthEndStr = `${monthEnd.year()}-${String(monthEnd.month() + 1).padStart(2, '0')}-${String(monthEnd.date()).padStart(2, '0')}`;
+  // 以月网格实际范围（42 天，含上月/下月临近日期）为口径，与 layoutTodos / DayCell 的渲染范围保持一致
+  const dates = Object.keys(dateIndexOf).sort();
+  const visStart = dates[0];
+  const visEnd = dates[dates.length - 1];
+  if (!visStart || !visEnd) return null;
   const rows = new Set<number>();
-  todos?.forEach((t) => {
-    const lo = t.start < monthStart ? monthStart : t.start;
-    const hi = t.end > monthEndStr ? monthEndStr : t.end;
+  todos.forEach((t) => {
+    const lo = t.start < visStart ? visStart : t.start;
+    const hi = t.end > visEnd ? visEnd : t.end;
     if (hi < lo) return;
     let d = dayjs(lo);
     while (fmt(d) <= hi) {
@@ -198,7 +198,7 @@ export function computeVisibilityRange(
     }
   });
   schedules.forEach((s) => {
-    if (s.date >= monthStart && s.date <= monthEndStr) {
+    if (s.date >= visStart && s.date <= visEnd) {
       const i = dateIndexOf[s.date];
       if (i !== undefined) rows.add(Math.floor(i / 7));
     }

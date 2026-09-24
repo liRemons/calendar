@@ -1,10 +1,8 @@
 // 日期格及其内部元素
 .day-cell {
-  padding: 6px 8px;
+  padding: 6px 0;
   border-radius: 4px;
   cursor: pointer;
-  /* border-right: 1px solid #d7d7d7;
-  border-bottom: 1px solid #d7d7d7; */
   display: flex;
   flex-direction: column;
   position: relative;
@@ -68,6 +66,12 @@
   justify-content: center;
 }
 
+@media screen and (max-width: 500px) {
+  .day-num {
+    font-size: 20px;
+  }
+}
+
 .day-lunar {
   font-size: 12px;
   color: var(--calendar-color-text-tertiary);
@@ -127,10 +131,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 8px;
-  gap: 4px;
+  padding: 2px 0;
+  gap: 2px;
   width: 100%;
   font-size: 12px;
+  line-height: 14px;
   cursor: pointer;
   white-space: nowrap;
 
