@@ -22,10 +22,11 @@ export interface DayItem {
   inMonth: boolean;
 }
 
-/** 生成 6x7（42 格）月视图网格，周日为一行开始 */
+/** 生成 6x7（42 格）月视图网格，周一为一行开始 */
 export function getMonthGrid(year: number, month: number): DayItem[] {
   const first = dayjs(`${year}-${month + 1}-01`);
-  const start = first.startOf('week'); // 周日
+  // day(): 周日=0 … 周六=6；向后对齐到本周一
+  const start = first.subtract((first.day() + 6) % 7, 'day');
   return Array.from({ length: 42 }, (_, i) => {
     const date = start.add(i, 'day');
     return { date, inMonth: date.month() === month };

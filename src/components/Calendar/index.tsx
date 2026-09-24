@@ -20,7 +20,7 @@ import './styles/calendar.less';
 
 export type { CalendarProps, IconItem, TodoSeg, ViewMode, VisibilityRange } from './types';
 
-const WEEK_HEADERS = ['日', '一', '二', '三', '四', '五', '六'];
+const WEEK_HEADERS = ['一', '二', '三', '四', '五', '六', '日'];
 
 export function Calendar({
   todos: initialTodos,
