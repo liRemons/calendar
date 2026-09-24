@@ -1,6 +1,6 @@
 {
   "name": "remons-calendar",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.5",
   "description": "React 日历组件：农历/节日展示、节假日与补班、待办范围（line 形式）、单日日程",
   "type": "module",
   "main": "./dist/index.cjs",

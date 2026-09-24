@@ -1,7 +1,7 @@
 // 日历下方的选中日详情面板
 .day-panel {
-  border-top: 1px solid #f0f0f0;
-  padding: 10px 12px 12px;
+  border-top: 1px solid var(--calendar-color-border);
+  padding: 6px 10px;
   flex: 1 1 300px;
   min-width: 300px
 }
@@ -9,34 +9,32 @@
 .day-panel-header {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
   gap: 8px;
-  margin-bottom: 8px;
   font-size: 14px;
   font-weight: 600;
+  justify-content: space-between;
 
   .day-panel-title {
     display: flex;
-
-    .day-panel-actions {
-      margin-left: 4px;
-      display: flex;
-      gap: 8px;
-    }
   }
+}
+
+.day-panel-actions {
+  display: flex;
+  gap: 8px;
 }
 
 .day-panel-sub {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
   font-size: 12px;
   font-weight: 400;
-  color: #888;
+  padding-left: 4px;
+  color: var(--calendar-color-text-tertiary);
 }
 
 .day-panel-section {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 
   &:last-of-type {
     margin-bottom: 0;
@@ -45,19 +43,19 @@
 
 .day-panel-subtitle {
   font-size: 12px;
-  color: #999;
+  color: var(--calendar-color-text-tertiary);
   margin-bottom: 4px;
 }
 
 .day-panel-todo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
+  gap: 4px;
+  padding: 4px 6px;
   border-radius: 6px;
   cursor: pointer;
-  background: #fff;
-  border: 1px solid #f0f0f0;
+  background: var(--calendar-color-bg);
+  border: 1px solid var(--calendar-color-border);
   margin-bottom: 4px;
 
   &:last-child {
@@ -65,14 +63,14 @@
   }
 
   &:hover {
-    border-color: #1677ff;
+    border-color: var(--calendar-color-primary);
   }
 }
 
 .day-panel-todo-dot {
   flex: none;
-  width: 10px;
-  height: 10px;
+  width: 14px;
+  height: 14px;
   border-radius: 3px;
 }
 
@@ -88,19 +86,19 @@
 .day-panel-todo-range {
   flex: none;
   font-size: 11px;
-  color: #999;
+  color: var(--calendar-color-text-tertiary);
   white-space: nowrap;
 }
 
 .day-panel-schedule {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
+  gap: 4px;
+  padding: 4px 6px;
   border-radius: 6px;
   cursor: pointer;
-  background: #fff;
-  border: 1px solid #f0f0f0;
+  background: var(--calendar-color-bg);
+  border: 1px solid var(--calendar-color-border);
   margin-bottom: 4px;
 
   &:last-child {
@@ -108,16 +106,17 @@
   }
 
   &:hover {
-    border-color: #1677ff;
+    border-color: var(--calendar-color-primary);
   }
 
   &:hover .day-panel-schedule-name {
-    color: #1677ff;
+    color: var(--calendar-color-primary);
   }
 }
 
 .day-panel-schedule-icon {
   flex: none;
+  display: inline-flex;
 }
 
 .day-panel-schedule-name {
@@ -132,6 +131,15 @@
 .day-panel-schedule-time {
   flex: none;
   font-size: 11px;
-  color: #999;
+  color: var(--calendar-color-text-tertiary);
   white-space: nowrap;
+}
+
+.day-panel-empty {
+  color: var(--calendar-color-text-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% - 25px);
+  font-size: 12px;
 }

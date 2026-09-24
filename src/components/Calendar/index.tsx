@@ -36,7 +36,7 @@ export function Calendar({
   const [cursor, setCursor] = useState<Dayjs>(dayjs());
   const [holidays, setHolidays] = useState<Record<string, HolidayInfo>>({});
   const [loading, setLoading] = useState(false);
-  const [viewMode, setViewMode] = useLocalStorage<ViewMode>('calendar_view_mode', isPreview ? 'items' : 'all');
+  const [viewMode, setViewMode] = useLocalStorage<ViewMode>(isPreview ? 'calendar_view_preview_mode' : 'calendar_view_mode', isPreview ? 'items' : 'all');
   /** 选中日期（YYYY-MM-DD），默认今天；null 表示未选中（不展示详情面板） */
   const [selectedDate, setSelectedDate] = useState<string | null>(fmt(dayjs()));
 
@@ -180,7 +180,7 @@ export function Calendar({
   }, [year, month]);
 
   const toggleSelect = (d: string) => {
-    setSelectedDate((prev) => (prev === d ? null : d));
+    setSelectedDate(d);
   };
 
   // "仅待办和日程"模式：计算有内容的周行范围（首~尾，中间周照常展示）

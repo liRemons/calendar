@@ -28,7 +28,7 @@ export interface DayCellProps {
 const MAX_SCHEDULES = 2;
 
 /** 农历展示：节日 > 节气 > 当月月份名（初一）> 农历日 */
-export function getLunarText(dateStr: string): string {
+export function getLunarText(dateStr: string, showMonth?: boolean): string {
   try {
     const [y, m, d] = dateStr.split('-').map(Number);
     const lunar = Solar.fromYmd(y, m, d).getLunar();
@@ -36,7 +36,10 @@ export function getLunarText(dateStr: string): string {
     if (festivals.length > 0) return festivals[0];
     const jieqi = lunar.getJieQi();
     if (jieqi) return jieqi;
-    return lunar.getDay() === 1 ? `${lunar.getMonthInChinese()}月初一` : lunar.getDayInChinese();
+    if (showMonth) {
+      return `${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`;
+    }
+    return lunar.getDay() === 1 ? `${lunar.getMonthInChinese()}月` : lunar.getDayInChinese();
   } catch {
     return '';
   }
@@ -77,7 +80,7 @@ export function DayCell(props: DayCellProps) {
           )}
         </span>
       </div>
-      {todoLanes > 0 && <div className="todo-spacer" style={{ height: todoLanes * 22 }} />}
+      {todoLanes > 0 && <div className="todo-spacer" style={{ height: todoLanes * 20 }} />}
 
       <div className="schedule-list">
         {visible.map((s) => (

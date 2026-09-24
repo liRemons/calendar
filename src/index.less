@@ -1,9 +1,11 @@
+@import './components/Calendar/styles/tokens.less';
+
 body {
   margin: 0;
-  background: #f5f6f8;
+  background: var(--calendar-color-bg-page);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei',
     sans-serif;
-  color: rgba(0, 0, 0, 0.88);
+  color: var(--calendar-color-text);
 }
 
 .app {
@@ -11,8 +13,8 @@ body {
   padding: 0;
   display: flex;
   border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  background: var(--calendar-color-bg);
+  box-shadow: var(--calendar-shadow-card);
 }
 
 @media screen and (max-width: 500px) {

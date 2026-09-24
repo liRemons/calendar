@@ -2,6 +2,7 @@
 .day-cell {
   padding: 6px 8px;
   border-radius: 4px;
+  cursor: pointer;
   /* border-right: 1px solid #d7d7d7;
   border-bottom: 1px solid #d7d7d7; */
   display: flex;
@@ -15,27 +16,27 @@
 
   &.out .day-num,
   &.out .day-lunar {
-    color: #bbb;
+    color: var(--calendar-color-text-disabled);
   }
 
   &.today {
-    background: #f0f7ff;
+    background: var(--calendar-color-today-bg);
   }
 
   &.selected {
-    background: #e6f4ff;
-    outline: 1px solid #1677ff;
+    background: var(--calendar-color-primary-bg);
+    outline: 1px solid var(--calendar-color-primary);
     outline-offset: -1px;
     border-radius: 6px;
     cursor: pointer;
 
     &.today {
-      background: #e6f4ff;
+      background: var(--calendar-color-primary-bg);
     }
   }
 
   &.weekend {
-    color: #1677ff;
+    color: var(--calendar-color-primary);
   }
 
   &.holiday-work {
@@ -43,7 +44,7 @@
   }
 
   &.holiday-off {
-    color: #1677ff;
+    color: var(--calendar-color-primary);
   }
 
 }
@@ -61,7 +62,6 @@
   font-size: 22px;
   font-weight: 650;
   min-width: 22px;
-  padding: 2px;
   height: 22px;
   display: inline-flex;
   align-items: center;
@@ -70,7 +70,7 @@
 
 .day-lunar {
   font-size: 12px;
-  color: #999;
+  color: var(--calendar-color-text-tertiary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -93,13 +93,13 @@
   justify-content: center;
 
   &.off {
-    background: #52c41a;
-    color: #fff;
+    background: var(--calendar-color-success);
+    color: var(--calendar-color-on-accent);
   }
 
   &.work {
-    background: #f5222d;
-    color: #fff;
+    background: var(--calendar-color-danger);
+    color: var(--calendar-color-on-accent);
   }
 }
 
@@ -107,6 +107,8 @@
   .day-holiday {
     top: 0;
     right: 0;
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -124,6 +126,8 @@
 .schedule-item {
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
   gap: 4px;
   width: 100%;
   font-size: 12px;
@@ -131,12 +135,13 @@
   white-space: nowrap;
 
   &:hover .schedule-name {
-    color: #1677ff;
+    color: var(--calendar-color-primary);
   }
 }
 
 .schedule-icon {
   flex: none;
+  display: inline-flex;
 }
 
 .schedule-name {
@@ -146,5 +151,5 @@
 
 .schedule-more {
   font-size: 11px;
-  color: #999;
+  color: var(--calendar-color-text-tertiary);
 }

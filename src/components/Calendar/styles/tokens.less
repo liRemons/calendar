@@ -1,0 +1,42 @@
+// 全局颜色 token：浅色为默认；data-theme="dark" 深色、data-theme="light" 浅色（data-theme 为唯一开关）
+// main.tsx 会在未显式设置 data-theme 时按系统 prefers-color-scheme 自动写入该属性
+:root {
+  --calendar-color-bg-page: rgba(255, 255, 255, 0.15);
+  --calendar-color-bg: rgba(255, 255, 255, 0.15);
+  --calendar-color-text: rgba(0, 0, 0, 0.88);
+  --calendar-color-text-secondary: #666;
+  --calendar-color-text-tertiary: #999;
+  --calendar-color-text-disabled: #bbb;
+  --calendar-color-border: rgba(255, 255, 255, 0.85);
+  --calendar-color-border-strong: rgba(0, 0, 0, 0.65);
+  --calendar-color-primary: #1677ff;
+  --calendar-color-primary-bg: #e6f4ff;
+  --calendar-color-today-bg: #f0f7ff;
+  --calendar-color-hover-bg: #f5f5f5;
+  --calendar-color-success: #52c41a;
+  --calendar-color-danger: #f5222d;
+  --calendar-color-on-accent: #fff;
+  --calendar-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --calendar-shadow-bar: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+// data-theme="dark" 强制深色
+:root[data-theme='dark'] {
+  --calendar-color-bg-page: #1a1d2e;
+  --calendar-color-bg: #1a1d2e;
+  --calendar-color-text: rgba(255, 255, 255, 0.88);
+  --calendar-color-text-secondary: rgba(255, 255, 255, 0.65);
+  --calendar-color-text-tertiary: rgba(255, 255, 255, 0.45);
+  --calendar-color-text-disabled: rgba(255, 255, 255, 0.35);
+  --calendar-color-border: #303030;
+  --calendar-color-border-strong: rgba(255, 255, 255, 0.65);
+  --calendar-color-primary: #1668dc;
+  --calendar-color-primary-bg: rgba(22, 119, 255, 0.25);
+  --calendar-color-today-bg: rgba(22, 119, 255, 0.15);
+  --calendar-color-hover-bg: rgba(255, 255, 255, 0.08);
+  --calendar-color-success: #49aa19;
+  --calendar-color-danger: #ff4d4f;
+  --calendar-color-on-accent: #fff;
+  --calendar-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --calendar-shadow-bar: 0 1px 2px rgba(0, 0, 0, 0.5);
+}

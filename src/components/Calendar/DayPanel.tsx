@@ -9,12 +9,10 @@ import './styles/day-panel.less';
 
 const WEEKDAYS = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
 
-/** 短日期格式：与选中日同年显示"M月D日"，否则显示"Y年M月D日" */
+/** 短日期格式：与选中日同年显示"MM.DD"，否则显示"YYYY.MM.DD" */
 function shortDate(dateStr: string, refYear: number): string {
   const d = dayjs(dateStr);
-  return d.year() === refYear
-    ? `${d.month() + 1}月${d.date()}日`
-    : `${d.year()}年${d.month() + 1}月${d.date()}日`;
+  return d.format(d.year() === refYear ? 'MM.DD ' : 'YYYY.MM.DD ');
 }
 
 interface DayPanelProps {
@@ -54,25 +52,24 @@ export function DayPanel({
       <div className="day-panel-header">
         <div className="day-panel-title">
           {d.year()}年{d.month() + 1}月{d.date()}日 {WEEKDAYS[d.day()]}
-          {
-            !isPreview && <div className="day-panel-actions">
-              <Button size="small" onClick={onAddTodo}>
-                添加待办
-              </Button>
-              <Button size="small" onClick={onAddSchedule}>
-                添加日程
-              </Button>
-            </div>
-          }
+          <span className="day-panel-sub">
+            {holiday?.name ? (
+              holiday.name
+            ) : (
+              (getLunarText(dateStr, true) || '\u00A0')
+            )}
+          </span>
         </div>
-
-        <span className="day-panel-sub">
-          {holiday?.name ? (
-            holiday.name
-          ) : (
-            (getLunarText(dateStr) || '\u00A0')
-          )}
-        </span>
+        {
+          !isPreview && <div className="day-panel-actions">
+            <Button size="small" onClick={onAddTodo}>
+              待办
+            </Button>
+            <Button size="small" onClick={onAddSchedule}>
+              日程
+            </Button>
+          </div>
+        }
       </div>
 
       {
@@ -120,7 +117,10 @@ export function DayPanel({
       }
 
       {
-        schedules.length === 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="本月暂无待办和日程" />
+        (schedules.length === 0 && todos.length === 0) &&
+        (isPreview ?
+          <div className="day-panel-empty">暂无待办和日程</div> :
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无待办和日程" />)
       }
 
     </div>
