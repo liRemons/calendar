@@ -5,3 +5,4 @@
  */
 export { Calendar } from './components/Calendar';
 export type { CalendarProps, IconItem } from './components/Calendar';
+export type { TodoRange, DailySchedule, HolidayInfo } from './types';
